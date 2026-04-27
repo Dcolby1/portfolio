@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Devin Colby — Applied AI Engineer & Historian</title>
+  <meta name="description" content="Portfolio of Devin Colby. Applied AI engineer & historian based at the University of Tennessee, Knoxville. Builds RAG systems, LLM applications, and offline AI tools.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --bg: #f5f0e6;
+      --bg-alt: #ede5d4;
+      --ink: #1a1814;
+      --ink-soft: #5a544a;
+      --accent: #b8451a;
+      --accent-light: #d97244;
+      --rule: #d4c8b3;
+    }
+
+    * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+    body {
+      font-family: 'Geist', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      font-feature-settings: "ss01", "ss02", "kern";
+    }
+
+    .font-serif { font-family: 'Fraunces', Georgia, serif; font-feature-settings: "ss01", "ss02"; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Paper grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.5;
+      z-index: 1;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.09 0 0 0 0 0.08 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+    }
+
+    main, header, footer { position: relative; z-index: 2; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.25s; }
+    .delay-3 { animation-delay: 0.4s; }
+
+    .display-name {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(4.5rem, 14vw, 13rem);
+      line-height: 0.88;
+      letter-spacing: -0.045em;
+      font-variation-settings: "opsz" 144;
+    }
+    .display-name .first { font-weight: 300; font-style: italic; }
+    .display-name .last  { font-weight: 400; }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    .accent { color: var(--accent); }
+    .ink-soft { color: var(--ink-soft); }
+    .rule-t { border-top: 1px solid var(--rule); }
+    .rule-b { border-bottom: 1px solid var(--rule); }
+
+    /* Drop cap */
+    .drop-cap::first-letter {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 4.8em;
+      line-height: 0.82;
+      float: left;
+      margin-right: 0.08em;
+      margin-top: 0.04em;
+      color: var(--accent);
+    }
+
+    /* Masthead */
+    .masthead {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background-color: rgba(245, 240, 230, 0.82);
+      backdrop-filter: blur(12px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .nav-link {
+      transition: color 0.25s ease;
+      position: relative;
+    }
+    .nav-link:hover { color: var(--accent); }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 100%; height: 1px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+    .nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
+
+    .status-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      padding: 0.3rem 0.7rem;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4em;
+    }
+    .status-pill .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .status-pill.live { color: var(--accent); }
+    .status-pill.live .dot { animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.2); }
+    }
+
+    /* Project card */
+    .project-card { transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+    .project-card:hover { transform: translateX(4px); }
+    .project-card .arrow {
+      display: inline-block;
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .project-card:hover .arrow { transform: translate(6px, -6px); }
+
+    .tech-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.3rem 0.65rem;
+      border-radius: 4px;
+      background: rgba(26, 24, 20, 0.06);
+      color: var(--ink-soft);
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+    }
+    .tech-tag:hover {
+      background: rgba(184, 69, 26, 0.08);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .link-arrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding-bottom: 2px;
+      border-bottom: 1px solid currentColor;
+      transition: color 0.2s ease, transform 0.2s ease;
+      display: inline-block;
+    }
+    .link-arrow:hover { color: var(--accent); transform: translateY(-1px); }
+
+    /* Smooth scroll */
+    html { scroll-behavior: smooth; }
+
+    /* Selection */
+    ::selection { background: var(--accent); color: var(--bg); }
+
+    /* Scroll-revealed sections */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.9s ease, transform 0.9s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* Subtle decorative ornament */
+    .ornament {
+      display: inline-block;
+      color: var(--accent);
+      opacity: 0.7;
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Masthead -->
+<header class="masthead">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+    <div class="font-mono text-xs ink-soft" style="letter-spacing: 0.22em;">
+      <span class="hidden sm:inline">VOL · I </span><span class="accent">·</span> PORTFOLIO MMXXVI
+    </div>
+    <nav class="flex gap-6 sm:gap-10 font-mono text-xs uppercase" style="letter-spacing: 0.2em;">
+      <a href="#work" class="nav-link">Work</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- Hero -->
+<section class="max-w-6xl mx-auto px-6 pt-16 sm:pt-28 pb-28">
+  <div class="section-label mb-10 fade-up">
+    Knoxville, Tennessee <span class="accent mx-2">·</span> University of Tennessee
+  </div>
+  <h1 class="display-name mb-12 fade-up delay-1">
+    <span class="first">Devin</span><br>
+    <span class="last">Colby.</span>
+  </h1>
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-end">
+    <div class="md:col-span-7 fade-up delay-2">
+      <p class="font-serif text-2xl md:text-[2rem] leading-[1.25] font-light italic">
+        Applied AI engineer<br>
+        & historian — building<br>
+        systems where language<br>
+        models meet <span class="accent not-italic font-normal">human context</span>.
+      </p>
+    </div>
+    <div class="md:col-span-4 md:col-start-9 fade-up delay-3 font-mono text-xs ink-soft" style="line-height: 2;">
+      <div>B.S. APPLIED ARTIFICIAL INTELLIGENCE</div>
+      <div>B.A. HISTORY</div>
+      <div class="mt-4 pt-4 rule-t">UNIVERSITY OF TENNESSEE, KNOXVILLE</div>
+      <div>EXPECTED GRADUATION · DEC. 2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about" class="rule-t">
+  <div class="max-w-4xl mx-auto px-6 py-24 reveal">
+    <div class="section-label mb-12">§ I &nbsp;—&nbsp; About</div>
+    <p class="font-serif text-xl md:text-2xl leading-[1.55] drop-cap">
+      I'm a final-year double-major at the University of Tennessee, Knoxville, working at an intersection most people don't expect: <em>applied artificial intelligence</em> and <em>history</em>. Most of what I build involves large language models — a deployed full-stack PWA for shared movie recommendations, a RAG system for academic advising, an offline AI that runs on consumer hardware. But the historical training matters as much as the engineering does; it's what teaches me to ask better questions about <em>what</em> we're building, and <em>why</em>.
+    </p>
+    <div class="mt-10 ornament text-2xl">❦</div>
+  </div>
+</section>
+
+<!-- Work -->
+<section id="work" class="rule-t">
+  <div class="max-w-6xl mx-auto px-6 py-24">
+    <div class="flex justify-between items-baseline mb-16 reveal">
+      <div class="section-label">§ II &nbsp;—&nbsp; Selected Work</div>
+      <div class="font-mono text-xs ink-soft">03 PROJECTS</div>
+    </div>
+
+    <!-- Project 01 — WatchWise -->
+    <article class="project-card rule-t pt-12 pb-16 grid grid-cols-1 md:grid-cols-12 gap-8 reveal">
+      <div class="md:col-span-3">
+        <div class="font-mono text-xs ink-soft mb-3" style="letter-spacing: 0.18em;">PROJECT &nbsp;01</div>
+        <span class="status-pill live"><span class="dot"></span>Live</span>
+      </div>
+      <div class="md:col-span-9">
+        <h3 class="font-serif text-4xl md:text-5xl font-light mb-3 leading-tight">
+          WatchWise <span class="arrow accent">↗</span>
+        </h3>
+        <p class="font-serif italic text-xl ink-soft mb-6">A shared recommendation engine for couples & friends.</p>
+        <p class="text-base leading-relaxed mb-6 max-w-2xl">
+          A full-stack Next.js Progressive Web App that lets users and their partners track and rate movies and shows together, using a four-way rating system to surface personalized recommendations powered by the Anthropic API. Built end-to-end including authentication, persistent storage with Supabase, and sync between paired accounts.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-8">
+          <span class="tech-tag">Next.js</span>
+          <span class="tech-tag">Supabase</span>
+          <span class="tech-tag">Anthropic API</span>
+          <span class="tech-tag">Vercel</span>
+          <span class="tech-tag">PWA</span>
+        </div>
+        <div class="flex gap-8">
+          <a href="#" class="link-arrow">View Live ↗</a>
+          <a href="https://github.com/Dcolby1" target="_blank" rel="noopener" class="link-arrow">Source ↗</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project 02 — Advising Vols -->
+    <article class="project-card rule-t pt-12 pb-16 grid grid-cols-1 md:grid-cols-12 gap-8 reveal">
+      <div class="md:col-span-3">
+        <div class="font-mono text-xs ink-soft mb-3" style="letter-spacing: 0.18em;">PROJECT &nbsp;02</div>
+        <span class="status-pill ink-soft"><span class="dot"></span>Working Prototype</span>
+      </div>
+      <div class="md:col-span-9">
+        <h3 class="font-serif text-4xl md:text-5xl font-light mb-3 leading-tight">Advising Vols</h3>
+        <p class="font-serif italic text-xl ink-soft mb-6">RAG-powered academic advising for the University of Tennessee.</p>
+        <p class="text-base leading-relaxed mb-6 max-w-2xl">
+          A Retrieval-Augmented Generation system that lets students and academic advisors query UTK policy, course, and enrollment data in natural language — replacing manual lookups across scattered PDFs and portals. Includes a custom PDF parsing pipeline that ingests DARS (Degree Audit Reporting System) documents across multiple program formats, plus separate student- and advisor-facing portals. Built with a five-person team.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-8">
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">RAG</span>
+          <span class="tech-tag">LangChain</span>
+          <span class="tech-tag">Vector DB</span>
+          <span class="tech-tag">Streamlit</span>
+          <span class="tech-tag">PDF Parsing</span>
+        </div>
+        <div class="flex gap-8">
+          <a href="https://github.com/Dcolby1" target="_blank" rel="noopener" class="link-arrow">Source ↗</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project 03 — Offline AI -->
+    <article class="project-card rule-t pt-12 pb-16 grid grid-cols-1 md:grid-cols-12 gap-8 reveal">
+      <div class="md:col-span-3">
+        <div class="font-mono text-xs ink-soft mb-3" style="letter-spacing: 0.18em;">PROJECT &nbsp;03</div>
+        <span class="status-pill ink-soft"><span class="dot"></span>Completed</span>
+      </div>
+      <div class="md:col-span-9">
+        <h3 class="font-serif text-4xl md:text-5xl font-light mb-3 leading-tight">Offline AI System</h3>
+        <p class="font-serif italic text-xl ink-soft mb-6">Local LLM inference, no internet required.</p>
+        <p class="text-base leading-relaxed mb-6 max-w-2xl">
+          A fully offline AI system that runs large language models locally on consumer hardware — no cloud, no API calls, no internet dependency. Implements a local RAG pipeline with ChromaDB for vector storage, supporting document-grounded question answering with low-latency private inference. Includes formal HCI documentation and Wizard of Oz usability testing.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-8">
+          <span class="tech-tag">Ollama</span>
+          <span class="tech-tag">Phi-3 Mini</span>
+          <span class="tech-tag">ChromaDB</span>
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">Local RAG</span>
+        </div>
+        <div class="flex gap-8">
+          <a href="https://github.com/Dcolby1" target="_blank" rel="noopener" class="link-arrow">Source ↗</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- Toolkit -->
+<section id="toolkit" class="rule-t">
+  <div class="max-w-6xl mx-auto px-6 py-24 reveal">
+    <div class="section-label mb-14">§ III &nbsp;—&nbsp; Toolkit</div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
+      <div>
+        <div class="font-mono text-xs ink-soft mb-3" style="letter-spacing: 0.2em;">LANGUAGES & FRAMEWORKS</div>
+        <p class="font-serif text-xl leading-relaxed">Python <span class="ornament">·</span> JavaScript <span class="ornament">·</span> React <span class="ornament">·</span> Next.js</p>
+      </div>
+      <div>
+        <div class="font-mono text-xs ink-soft mb-3" style="letter-spacing: 0.2em;">AI & MACHINE LEARNING</div>
+        <p class="font-serif text-xl leading-relaxed">Retrieval-Augmented Generation <span class="ornament">·</span> LangChain <span class="ornament">·</span> Hugging Face <span class="ornament">·</span> Ollama <span class="ornament">·</span> ChromaDB <span class="ornament">·</span> Anthropic API <span class="ornament">·</span> Prompt engineering <span class="ornament">·</span> Local LLM deployment</p>
+      </div>
+      <div>
+        <div class="font-mono text-xs ink-soft mb-3" style="letter-spacing: 0.2em;">DATA & BACKEND</div>
+        <p class="font-serif text-xl leading-relaxed">pandas <span class="ornament">·</span> scikit-learn <span class="ornament">·</span> NumPy <span class="ornament">·</span> REST APIs <span class="ornament">·</span> FastAPI <span class="ornament">·</span> Flask <span class="ornament">·</span> Supabase <span class="ornament">·</span> Vercel</p>
+      </div>
+      <div>
+        <div class="font-mono text-xs ink-soft mb-3" style="letter-spacing: 0.2em;">TOOLS & VISUALIZATION</div>
+        <p class="font-serif text-xl leading-relaxed">Git <span class="ornament">·</span> GitHub <span class="ornament">·</span> Tableau <span class="ornament">·</span> PDF parsing pipelines <span class="ornament">·</span> Data ingestion</p>
+      </div>
+      <div class="md:col-span-2">
+        <div class="font-mono text-xs ink-soft mb-3" style="letter-spacing: 0.2em;">HARDWARE & SYSTEMS</div>
+        <p class="font-serif text-xl leading-relaxed">Computer hardware troubleshooting <span class="ornament">·</span> CompTIA A+ (in progress)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Background / Experience -->
+<section id="background" class="rule-t">
+  <div class="max-w-6xl mx-auto px-6 py-24">
+    <div class="section-label mb-14 reveal">§ IV &nbsp;—&nbsp; Background</div>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 rule-t pt-10 pb-2 reveal">
+      <div class="md:col-span-3 font-mono text-xs ink-soft" style="letter-spacing: 0.2em;">RECENT</div>
+      <div class="md:col-span-9">
+        <div class="font-serif text-2xl md:text-3xl mb-1 font-light">East Tennessee Historical Society & Museum</div>
+        <div class="font-mono text-xs ink-soft mb-4" style="letter-spacing: 0.15em;">ARCHIVAL RESEARCH <span class="accent">·</span> KNOXVILLE, TN</div>
+        <p class="text-base leading-relaxed max-w-3xl">
+          Supported archival research and public programming, organizing and cataloging large volumes of primary source materials and contextualizing documents for research and public-facing exhibitions.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 rule-t pt-10 pb-2 mt-2 reveal">
+      <div class="md:col-span-3 font-mono text-xs ink-soft" style="letter-spacing: 0.2em;">PRIOR</div>
+      <div class="md:col-span-9">
+        <div class="font-serif text-2xl md:text-3xl mb-1 font-light">Howard Baker Center for Public Policy</div>
+        <div class="font-mono text-xs ink-soft mb-4" style="letter-spacing: 0.15em;">OUTREACH & EVENTS <span class="accent">·</span> UTK</div>
+        <p class="text-base leading-relaxed max-w-3xl">
+          Assisted with event coordination and public outreach for a nonpartisan public policy center, communicating across politically diverse stakeholder groups.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 rule-t pt-10 pb-2 mt-2 reveal">
+      <div class="md:col-span-3 font-mono text-xs ink-soft" style="letter-spacing: 0.2em;">PRIOR</div>
+      <div class="md:col-span-9">
+        <div class="font-serif text-2xl md:text-3xl mb-1 font-light">Whole Foods Market</div>
+        <div class="font-mono text-xs ink-soft mb-4" style="letter-spacing: 0.15em;">CUSTOMER SERVICE <span class="accent">·</span> KNOXVILLE, TN</div>
+        <p class="text-base leading-relaxed max-w-3xl">
+          High-volume retail. Reliability, teamwork, and operating under pressure.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="rule-t">
+  <div class="max-w-6xl mx-auto px-6 py-32 reveal">
+    <div class="section-label mb-14">§ V &nbsp;—&nbsp; Get in Touch</div>
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+      <div class="md:col-span-7">
+        <h2 class="font-serif font-light italic leading-[0.95] mb-10" style="font-size: clamp(3rem, 8vw, 6rem); letter-spacing: -0.025em;">
+          Currently<br>
+          seeking roles<br>
+          in <span class="accent not-italic font-normal">AI</span>, data,<br>
+          & software.
+        </h2>
+        <p class="font-serif text-xl leading-relaxed max-w-xl ink-soft italic">
+          Most interested in roles where I can ship real systems — applied AI, LLM tooling, data engineering, or product-focused software work. Reach out for full-time opportunities, collaborations, or just to talk shop.
+        </p>
+      </div>
+      <div class="md:col-span-4 md:col-start-9">
+        <div class="space-y-7 font-mono text-sm">
+          <div>
+            <div class="text-xs ink-soft mb-2" style="letter-spacing: 0.2em;">EMAIL</div>
+            <a href="mailto:devintcolby@gmail.com" class="nav-link">devintcolby@gmail.com</a>
+          </div>
+          <div>
+            <div class="text-xs ink-soft mb-2" style="letter-spacing: 0.2em;">PHONE</div>
+            <a href="tel:8658052660" class="nav-link">865 · 805 · 2660</a>
+          </div>
+          <div>
+            <div class="text-xs ink-soft mb-2" style="letter-spacing: 0.2em;">GITHUB</div>
+            <a href="https://github.com/Dcolby1" target="_blank" rel="noopener" class="nav-link">github.com/Dcolby1</a>
+          </div>
+          <div>
+            <div class="text-xs ink-soft mb-2" style="letter-spacing: 0.2em;">LINKEDIN</div>
+            <a href="#" class="nav-link">[ INSERT LINKEDIN URL ]</a>
+          </div>
+          <div>
+            <div class="text-xs ink-soft mb-2" style="letter-spacing: 0.2em;">LOCATION</div>
+            <span>Knoxville, Tennessee</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="rule-t py-10">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 font-mono text-xs ink-soft" style="letter-spacing: 0.18em;">
+    <div>© MMXXVI <span class="accent">·</span> DEVIN COLBY</div>
+    <div>BUILT IN KNOXVILLE, TN</div>
+  </div>
+</footer>
+
+<script>
+  // Reveal sections on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
